@@ -1,4 +1,4 @@
-package com.sapuseven.ya2fa
+package com.sapuseven.ya2fa.utils
 
 import java.text.NumberFormat
 import java.util.*

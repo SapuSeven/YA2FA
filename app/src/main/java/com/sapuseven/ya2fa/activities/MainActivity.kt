@@ -1,4 +1,4 @@
-package com.sapuseven.ya2fa
+package com.sapuseven.ya2fa.activities
 
 import android.Manifest
 import android.content.Intent
@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sapuseven.ya2fa.adapters.TokenListAdapter
+import com.sapuseven.ya2fa.R
+import com.sapuseven.ya2fa.adapters.TokenEntry
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listRefreshHandler: Handler
-    private lateinit var adapter: EntryListAdapter
+    private lateinit var adapter: TokenListAdapter
 
     companion object {
         private const val REQUEST_CODE_SCANNER = 1
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val items = arrayListOf(TokenEntry("test", "Test", "Issuer"))
-        adapter = EntryListAdapter(items)
+        adapter = TokenListAdapter(items)
 
         rvEntries.adapter = adapter
         rvEntries.layoutManager = LinearLayoutManager(this)

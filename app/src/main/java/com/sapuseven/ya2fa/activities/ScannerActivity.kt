@@ -1,4 +1,4 @@
-package com.sapuseven.ya2fa
+package com.sapuseven.ya2fa.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -8,13 +8,14 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.google.zxing.BarcodeFormat
+import com.sapuseven.ya2fa.R
 
 class ScannerActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
 
     companion object {
-        const val EXTRA_STRING_URL = "com.sapuseven.ya2fa.ScannerActivity.url"
-        const val EXTRA_STRING_ERROR = "com.sapuseven.ya2fa.ScannerActivity.error"
+        const val EXTRA_STRING_URL = "com.sapuseven.ya2fa.activity.ScannerActivity.url"
+        const val EXTRA_STRING_ERROR = "com.sapuseven.ya2fa.activity.ScannerActivity.error"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.sapuseven.ya2fa
+package com.sapuseven.ya2fa.adapters
 
 data class TokenEntry(
     val secret: String,

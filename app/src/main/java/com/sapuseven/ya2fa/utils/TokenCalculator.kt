@@ -1,4 +1,4 @@
-package com.sapuseven.ya2fa
+package com.sapuseven.ya2fa.utils
 
 import java.nio.ByteBuffer
 import java.security.InvalidKeyException
@@ -32,7 +32,8 @@ object TokenCalculator {
         digits: Int,
         algorithm: HashAlgorithm
     ): Int {
-        val fullToken = TOTP(secret, period, time, algorithm)
+        val fullToken =
+            TOTP(secret, period, time, algorithm)
         val div = Math.pow(10.0, digits.toDouble()).toInt()
 
         return fullToken % div
@@ -56,7 +57,12 @@ object TokenCalculator {
     }
 
     fun TOTP_Steam(secret: ByteArray, period: Int, digits: Int, algorithm: HashAlgorithm): String {
-        var fullToken = TOTP(secret, period, System.currentTimeMillis() / 1000, algorithm)
+        var fullToken = TOTP(
+            secret,
+            period,
+            System.currentTimeMillis() / 1000,
+            algorithm
+        )
 
         val tokenBuilder = StringBuilder()
 

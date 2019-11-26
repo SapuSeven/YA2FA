@@ -14,7 +14,7 @@
 		android:hardwareAccelerated="true"
 		android:theme="@style/AppTheme">
 
-		<activity android:name=".MainActivity">
+		<activity android:name=".activities.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +22,6 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".ScannerActivity"></activity>
+		<activity android:name=".activities.ScannerActivity"></activity>
 	</application>
 </manifest>
