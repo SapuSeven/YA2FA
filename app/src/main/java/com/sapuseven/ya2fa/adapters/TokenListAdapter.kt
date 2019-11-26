@@ -31,7 +31,7 @@ class TokenListAdapter(private val items: List<Token>) :
                 DEFAULT_ALGORITHM
             ), 3
         )
-        holder.tvSite.text = item.label
+        holder.tvLabel.text = if (item.issuer?.isNotBlank() == true) "${item.issuer} (${item.label})" else item.label
     }
 
     override fun getItemCount(): Int {
@@ -40,6 +40,6 @@ class TokenListAdapter(private val items: List<Token>) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvCode: TextView = itemView.findViewById(R.id.tvCode)
-        val tvSite: TextView = itemView.findViewById(R.id.tvSite)
+        val tvLabel: TextView = itemView.findViewById(R.id.tvLabel)
     }
 }

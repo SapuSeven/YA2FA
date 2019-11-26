@@ -21,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.sapuseven.ya2fa.R
@@ -100,6 +102,9 @@ class MainActivity : AppCompatActivity() {
                             REQUEST_CODE_SCANNER
                         )
                 }
+                R.id.fab_manual -> {
+                    showManualInput()
+                }
             }
         }
 
@@ -109,6 +114,24 @@ class MainActivity : AppCompatActivity() {
 
             adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun showManualInput() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_token, null)
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Add account")
+            .setView(dialogView)
+            .setPositiveButton("Add") { dialogInterface, i ->
+                val newToken = Token(
+                    label = dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).text.toString(),
+                    issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
+                    secret = dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).text.toString()
+                )
+                addItem(newToken)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
