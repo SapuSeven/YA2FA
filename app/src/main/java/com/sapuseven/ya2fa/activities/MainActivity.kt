@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -138,7 +139,10 @@ class MainActivity : AppCompatActivity() {
     private fun showAbout() {
         LibsBuilder()
             .withActivityStyle(
-                if (sharedPrefs.getBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, false))
+                if (
+                    sharedPrefs.getBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, false)
+                    || applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+                )
                     Libs.ActivityStyle.DARK
                 else
                     Libs.ActivityStyle.LIGHT_DARK_TOOLBAR
