@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,4 +10,19 @@
         android:id="@+id/rvEntries"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fab_extraMargin="-8dp"
+        app:fab_fabBackgroundColor="@color/colorAccent"
+        app:fab_fabDrawableTint="@android:color/white"
+        app:fab_fabRippleColor="@android:color/white"
+        app:fab_menu="@menu/fab_add"
+        app:fab_miniFabBackgroundColor="@color/colorAccent"
+        app:fab_miniFabDrawableTint="@android:color/white"
+        app:fab_miniFabTextBackground="@drawable/label"
+        app:fab_miniFabTextColor="?android:attr/textColorPrimary"
+        app:fab_useRevealEffect="false" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,6 @@ import org.apache.commons.codec.binary.Base32
 class EntryListAdapter(private val list: ArrayList<TokenEntry>) :
     RecyclerView.Adapter<EntryListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entry, parent, false)
         return ViewHolder(view)
     }

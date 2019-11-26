@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/fab_scan"
+		android:icon="@drawable/ic_add_scan"
+		android:orderInCategory="1"
+		android:title="Scan" />
+
+	<item
+		android:id="@+id/fab_manual"
+		android:icon="@drawable/ic_add_manual"
+		android:orderInCategory="2"
+		android:title="Manual" />
+</menu>

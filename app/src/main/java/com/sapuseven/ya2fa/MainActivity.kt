@@ -1,15 +1,25 @@
 package com.sapuseven.ya2fa
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listRefreshHandler: Handler
     private lateinit var adapter: EntryListAdapter
+
+    companion object {
+        private const val REQUEST_CODE_SCANNER = 1
+        private const val PERMISSION_REQUEST_CAMERA = 2
+    }
 
     private val otpUpdate = object : Runnable {
         override fun run() {
@@ -33,8 +43,44 @@ class MainActivity : AppCompatActivity() {
         rvEntries.layoutManager = LinearLayoutManager(this)
 
         listRefreshHandler = Handler(Looper.getMainLooper())
-
         listRefreshHandler.post(otpUpdate)
+
+        fab.addOnMenuItemClickListener { _, _, itemId ->
+            when (itemId) {
+                R.id.fab_scan -> {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.CAMERA
+                        ) != PackageManager.PERMISSION_GRANTED
+                    )
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.CAMERA),
+                            PERMISSION_REQUEST_CAMERA
+                        )
+                    else
+                        startActivityForResult(
+                            Intent(this, ScannerActivity::class.java),
+                            REQUEST_CODE_SCANNER
+                        )
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_REQUEST_CAMERA ->
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
+                    startActivityForResult(
+                        Intent(this, ScannerActivity::class.java),
+                        REQUEST_CODE_SCANNER
+                    )
+        }
     }
 
     override fun onPause() {
