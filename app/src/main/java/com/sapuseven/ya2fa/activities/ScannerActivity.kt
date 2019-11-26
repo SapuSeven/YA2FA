@@ -14,8 +14,8 @@ class ScannerActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
 
     companion object {
-        const val EXTRA_STRING_URL = "com.sapuseven.ya2fa.activity.ScannerActivity.url"
-        const val EXTRA_STRING_ERROR = "com.sapuseven.ya2fa.activity.ScannerActivity.error"
+        const val EXTRA_STRING_URL = "com.sapuseven.ya2fa.activities.ScannerActivity.url"
+        const val EXTRA_STRING_ERROR = "com.sapuseven.ya2fa.activities.ScannerActivity.error"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

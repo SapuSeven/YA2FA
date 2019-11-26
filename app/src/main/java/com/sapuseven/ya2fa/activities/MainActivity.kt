@@ -3,15 +3,22 @@ package com.sapuseven.ya2fa.activities
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.sapuseven.ya2fa.R
@@ -27,12 +34,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listRefreshHandler: Handler
     private lateinit var adapter: TokenListAdapter
     private lateinit var tokenDatabase: TokenDatabase
+    private lateinit var sharedPrefs: SharedPreferences
 
     private val tokens = ArrayList<Token>()
 
     companion object {
         private const val REQUEST_CODE_SCANNER = 1
         private const val PERMISSION_REQUEST_CAMERA = 2
+
+        private const val PREFERENCE_KEY_FORCE_DARK_THEME = "force_dark_theme"
     }
 
     private val otpUpdate = object : Runnable {
@@ -47,6 +57,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPrefs = getDefaultSharedPreferences(this)
+
+        if (sharedPrefs.getBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, false))
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+        else
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -89,6 +106,27 @@ class MainActivity : AppCompatActivity() {
             pbLoading.visibility = View.GONE
 
             adapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_options, menu)
+        menu.findItem(R.id.main_options_dark_mode).isChecked =
+            sharedPrefs.getBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, false)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.main_options_dark_mode -> {
+                sharedPrefs.edit().apply {
+                    putBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, !item.isChecked)
+                }.apply()
+                recreate()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

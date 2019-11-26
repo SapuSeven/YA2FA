@@ -35,6 +35,7 @@
         app:fab_menu="@menu/fab_add"
         app:fab_miniFabBackgroundColor="@color/colorAccent"
         app:fab_miniFabDrawableTint="@android:color/white"
+        app:fab_miniFabRippleColor="@android:color/white"
         app:fab_miniFabTextBackground="@drawable/label"
         app:fab_miniFabTextColor="?android:attr/textColorPrimary"
         app:fab_useRevealEffect="false"
