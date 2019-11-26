@@ -6,4 +6,9 @@
         android:checkable="true"
         android:title="Force dark theme"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_options_about"
+        android:title="About"
+        app:showAsAction="never" />
 </menu>

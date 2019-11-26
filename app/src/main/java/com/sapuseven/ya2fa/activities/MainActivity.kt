@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -21,6 +20,8 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.sapuseven.ya2fa.R
 import com.sapuseven.ya2fa.adapters.TokenListAdapter
 import com.sapuseven.ya2fa.data.Token
@@ -126,8 +127,24 @@ class MainActivity : AppCompatActivity() {
                 recreate()
                 true
             }
+            R.id.main_options_about -> {
+                showAbout()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showAbout() {
+        LibsBuilder()
+            .withActivityStyle(
+                if (sharedPrefs.getBoolean(PREFERENCE_KEY_FORCE_DARK_THEME, false))
+                    Libs.ActivityStyle.DARK
+                else
+                    Libs.ActivityStyle.LIGHT_DARK_TOOLBAR
+            )
+            .withActivityTitle("About")
+            .start(this)
     }
 
     override fun onRequestPermissionsResult(

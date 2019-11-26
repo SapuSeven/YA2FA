@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Apache Commons Codec -->
+    <string name="define_CommonsCodec" />
+    <string name="library_CommonsCodec_author">The Apache Software Foundation</string>
+    <string name="library_CommonsCodec_authorWebsite">https://apache.org</string>
+    <string name="library_CommonsCodec_libraryName">Commons Codec</string>
+    <string name="library_CommonsCodec_libraryDescription">Apache Commons Codec (TM) software provides implementations of common encoders and decoders such as Base64, Hex, Phonetic and URLs.</string>
+    <string name="library_CommonsCodec_libraryWebsite">https://commons.apache.org/proper/commons-codec/</string>
+    <string name="library_CommonsCodec_libraryVersion">1.12</string>
+    <string name="library_CommonsCodec_isOpenSource">true</string>
+    <string name="library_CommonsCodec_repositoryLink">https://github.com/apache/commons-codec</string>
+    <string name="library_CommonsCodec_classPath">org.apache.commons.codec</string>
+    <string name="library_CommonsCodec_licenseId">apache_2_0</string>
+
+    <!-- AndroidX Jetpack -->
+    <string name="define_AndroidX" />
+    <string name="library_AndroidX_author">AOSP</string>
+    <string name="library_AndroidX_authorWebsite">https://developer.android.com</string>
+    <string name="library_AndroidX_libraryName">AndroidX Jetpack</string>
+    <string name="library_AndroidX_libraryDescription">AndroidX is a major improvement to the original Android Support Library and provides backwards-compatibility across Android releases.</string>
+    <string name="library_AndroidX_libraryWebsite">https://developer.android.com/jetpack/androidx</string>
+    <string name="library_AndroidX_libraryVersion">1.1.0</string>
+    <string name="library_AndroidX_isOpenSource">true</string>
+    <string name="library_AndroidX_repositoryLink">https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev</string>
+    <string name="library_AndroidX_licenseId">apache_2_0</string>
+
+    <!-- Kotlin Standard Library -->
+    <string name="define_KotlinStdlib" />
+    <string name="library_KotlinStdlib_author">JetBrains</string>
+    <string name="library_KotlinStdlib_authorWebsite">https://kotlinlang.org</string>
+    <string name="library_KotlinStdlib_libraryName">Kotlin Standard Library</string>
+    <string name="library_KotlinStdlib_libraryDescription">The Kotlin Standard Library provides living essentials for everyday work with Kotlin.</string>
+    <string name="library_KotlinStdlib_libraryWebsite">https://kotlinlang.org/api/latest/jvm/stdlib/index.html</string>
+    <string name="library_KotlinStdlib_libraryVersion">1.2.71</string>
+    <string name="library_KotlinStdlib_isOpenSource">true</string>
+    <string name="library_KotlinStdlib_repositoryLink">https://github.com/JetBrains/kotlin/tree/master/libraries/stdlib</string>
+    <string name="library_KotlinStdlib_licenseId">apache_2_0</string>
+
+    <!-- Material Components -->
+    <string name="define_Material" />
+    <string name="library_Material_author">Google</string>
+    <string name="library_Material_authorWebsite">https://material.io/develop</string>
+    <string name="library_Material_libraryName">Material Components</string>
+    <string name="library_Material_libraryDescription">Make beautiful products, faster. Material is a design system – backed by open-source code – that helps teams build digital experiences.</string>
+    <string name="library_Material_libraryWebsite">https://material.io/develop/android</string>
+    <string name="library_Material_libraryVersion">1.2.0-alpha02</string>
+    <string name="library_Material_isOpenSource">true</string>
+    <string name="library_Material_repositoryLink">https://github.com/material-components/material-components-android</string>
+    <string name="library_Material_licenseId">apache_2_0</string>
+
+    <!-- MaterialFabSpeedDial -->
+    <string name="define_MaterialFabSpeedDial" />
+    <string name="library_MaterialFabSpeedDial_author">Keisuke Kobayashi</string>
+    <string name="library_MaterialFabSpeedDial_authorWebsite">https://twitter.com/kobakei122</string>
+    <string name="library_MaterialFabSpeedDial_libraryName">MaterialFabSpeedDial</string>
+    <string name="library_MaterialFabSpeedDial_libraryDescription">This project aims to provide FloatingActionButton\'s speed dial pattern in material design guideline.</string>
+    <string name="library_MaterialFabSpeedDial_libraryWebsite">https://github.com/kobakei/MaterialFabSpeedDial</string>
+    <string name="library_MaterialFabSpeedDial_libraryVersion">2.0.0-RC1</string>
+    <string name="library_MaterialFabSpeedDial_isOpenSource">true</string>
+    <string name="library_MaterialFabSpeedDial_repositoryLink">https://github.com/kobakei/MaterialFabSpeedDial</string>
+    <string name="library_MaterialFabSpeedDial_licenseId">apache_2_0</string>
+
+    <!-- Code Scanner -->
+    <string name="define_CodeScanner" />
+    <string name="library_CodeScanner_author">Yuriy Budiyev</string>
+    <string name="library_CodeScanner_authorWebsite">https://vk.com/yuriy.budiyev</string>
+    <string name="library_CodeScanner_libraryName">Code Scanner</string>
+    <string name="library_CodeScanner_libraryDescription">Code scanner library for Android, based on ZXing</string>
+    <string name="library_CodeScanner_libraryWebsite">https://github.com/yuriy-budiyev/code-scanner</string>
+    <string name="library_CodeScanner_libraryVersion">2.1.0</string>
+    <string name="library_CodeScanner_isOpenSource">true</string>
+    <string name="library_CodeScanner_repositoryLink">https://github.com/yuriy-budiyev/code-scanner</string>
+    <string name="library_CodeScanner_licenseId">mit</string>
+</resources>
