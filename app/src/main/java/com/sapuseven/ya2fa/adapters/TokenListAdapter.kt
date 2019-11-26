@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sapuseven.ya2fa.R
+import com.sapuseven.ya2fa.data.Token
 import com.sapuseven.ya2fa.utils.TokenCalculator.DEFAULT_ALGORITHM
 import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_DEFAULT_DIGITS
 import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_DEFAULT_PERIOD
@@ -13,7 +14,7 @@ import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_RFC6238
 import com.sapuseven.ya2fa.utils.Tools
 import org.apache.commons.codec.binary.Base32
 
-class TokenListAdapter(private val list: ArrayList<TokenEntry>) :
+class TokenListAdapter(private val items: List<Token>) :
     RecyclerView.Adapter<TokenListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entry, parent, false)
@@ -21,7 +22,7 @@ class TokenListAdapter(private val list: ArrayList<TokenEntry>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
+        val item = items[position]
         holder.tvCode.text = Tools.formatToken(
             TOTP_RFC6238(
                 Base32().decode(item.secret),
@@ -34,7 +35,7 @@ class TokenListAdapter(private val list: ArrayList<TokenEntry>) :
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return items.size
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
