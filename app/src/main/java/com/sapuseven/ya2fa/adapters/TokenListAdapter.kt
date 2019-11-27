@@ -15,12 +15,14 @@ import org.apache.commons.codec.binary.Base32
 
 class TokenListAdapter(
     private val tokens: List<Token>,
-    private val onItemClickListener: View.OnClickListener
+    private val onItemClickListener: View.OnClickListener,
+    private val onItemLongClickListener: View.OnLongClickListener
 ) :
     RecyclerView.Adapter<TokenListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entry, parent, false)
         view.setOnClickListener(onItemClickListener)
+        view.setOnLongClickListener(onItemLongClickListener)
         return ViewHolder(view)
     }
 

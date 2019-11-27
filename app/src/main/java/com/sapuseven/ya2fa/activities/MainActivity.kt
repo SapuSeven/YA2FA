@@ -2,7 +2,6 @@ package com.sapuseven.ya2fa.activities
 
 import android.Manifest
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tokenDatabase: TokenDatabase
     private lateinit var sharedPrefs: SharedPreferences
 
-    private val tokens = ArrayList<Token>()
+    private val tokens = mutableListOf<Token>()
 
     companion object {
         private const val REQUEST_CODE_SCANNER = 1
@@ -108,6 +107,31 @@ class MainActivity : AppCompatActivity() {
             clipboard.setPrimaryClip(ClipData.newPlainText("OTP Code", code))
 
             Toast.makeText(this, "Auth code copied to clipboard", Toast.LENGTH_SHORT).show()
+        }, View.OnLongClickListener { v ->
+            val itemPosition = rvEntries.getChildLayoutPosition(v)
+            val item = adapter.getItemAt(itemPosition)
+
+            val dialogView = layoutInflater.inflate(R.layout.dialog_add_token, null)
+
+            dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).setText(item.label)
+            dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).setText(item.issuer)
+            dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).setText(item.secret)
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Edit account")
+                .setView(dialogView)
+                .setPositiveButton("Add") { _, _ ->
+                    val newToken = item.copy(
+                        label = dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).text.toString(),
+                        issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
+                        secret = dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).text.toString()
+                    )
+                    updateItem(newToken)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+
+            true
         })
 
         rvEntries.adapter = adapter
@@ -149,7 +173,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("InflateParams")
     private fun showManualInput() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_token, null)
 
@@ -253,6 +276,26 @@ class MainActivity : AppCompatActivity() {
         listRefreshHandler.post(otpUpdate)
     }
 
+    private fun updateItem(token: Token) {
+        if (!token.isValid()) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Invalid data")
+                .setMessage("The item you want to add is invalid.\nPlease check your input values and try again.")
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            tokenDatabase.tokenDao().update(token)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                tokens.replaceAll(token) { it.id == token.id}
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
     private fun addItem(token: Token) {
         if (!token.isValid()) {
             MaterialAlertDialogBuilder(this)
@@ -271,5 +314,13 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         }
+    }
+}
+
+private fun <E> MutableList<E>.replaceAll(replacement: E, predicate: (E) -> Boolean) {
+    val iterate = listIterator()
+    while (iterate.hasNext()) {
+        val value = iterate.next()
+        if (predicate(value)) iterate.set(replacement)
     }
 }

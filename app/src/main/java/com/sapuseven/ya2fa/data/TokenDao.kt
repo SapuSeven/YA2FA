@@ -1,9 +1,6 @@
 package com.sapuseven.ya2fa.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface TokenDao {
@@ -15,4 +12,7 @@ interface TokenDao {
 
     @Delete
     fun delete(token: Token)
+
+    @Update
+    fun update(token: Token)
 }
