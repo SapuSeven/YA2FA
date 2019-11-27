@@ -4,6 +4,8 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -17,6 +19,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -32,10 +35,12 @@ import com.sapuseven.ya2fa.R
 import com.sapuseven.ya2fa.adapters.TokenListAdapter
 import com.sapuseven.ya2fa.data.Token
 import com.sapuseven.ya2fa.data.TokenDatabase
+import com.sapuseven.ya2fa.utils.TokenCalculator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.apache.commons.codec.binary.Base32
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listRefreshHandler: Handler
@@ -88,7 +93,21 @@ class MainActivity : AppCompatActivity() {
             .databaseBuilder(applicationContext, TokenDatabase::class.java, "tokens")
             .build()
 
-        adapter = TokenListAdapter(tokens)
+        adapter = TokenListAdapter(tokens, View.OnClickListener { v ->
+            val itemPosition = rvEntries.getChildLayoutPosition(v)
+            val item = adapter.getItemAt(itemPosition)
+
+            val code = TokenCalculator.TOTP_RFC6238(
+                Base32().decode(item.secret),
+                TokenCalculator.TOTP_DEFAULT_PERIOD,
+                TokenCalculator.TOTP_DEFAULT_DIGITS,
+                TokenCalculator.DEFAULT_ALGORITHM
+            )
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(ClipData.newPlainText("OTP Code", code))
+
+            Toast.makeText(this, "Auth code copied to clipboard", Toast.LENGTH_SHORT).show()
+        })
 
         rvEntries.adapter = adapter
         rvEntries.layoutManager = LinearLayoutManager(this@MainActivity)
