@@ -3,10 +3,7 @@ package com.sapuseven.ya2fa.activities
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
@@ -120,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Edit account")
                 .setView(dialogView)
-                .setPositiveButton("Add") { _, _ ->
+                .setPositiveButton("Save") { _, _ ->
                     val newToken = item.copy(
                         label = dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).text.toString(),
                         issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
@@ -129,6 +126,9 @@ class MainActivity : AppCompatActivity() {
                     updateItem(newToken)
                 }
                 .setNegativeButton("Cancel", null)
+                /*.setNeutralButton("Delete") { dialogInterface, i ->
+
+                }*/
                 .show()
 
             true
