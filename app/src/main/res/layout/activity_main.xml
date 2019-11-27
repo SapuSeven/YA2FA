@@ -1,44 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".activities.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEntries"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+	<ProgressBar
+		android:id="@+id/pbInterval"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="match_parent"
+		android:layout_height="8dp"
+		android:max="3000"
+		android:progressDrawable="@drawable/progressbar_interval"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/pbLoading"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rvEntries"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/pbInterval" />
 
-    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
-        android:id="@+id/fab"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:fab_extraMargin="-8dp"
-        app:fab_fabBackgroundColor="@color/colorAccent"
-        app:fab_fabDrawableTint="@android:color/white"
-        app:fab_fabRippleColor="@android:color/white"
-        app:fab_menu="@menu/fab_add"
-        app:fab_miniFabBackgroundColor="@color/colorAccent"
-        app:fab_miniFabDrawableTint="@android:color/white"
-        app:fab_miniFabRippleColor="@android:color/white"
-        app:fab_miniFabTextBackground="@drawable/label"
-        app:fab_miniFabTextColor="?android:attr/textColorPrimary"
-        app:fab_useRevealEffect="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+	<ProgressBar
+		android:id="@+id/pbLoading"
+		style="?android:attr/progressBarStyle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<io.github.kobakei.materialfabspeeddial.FabSpeedDial
+		android:id="@+id/fab"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:fab_extraMargin="-8dp"
+		app:fab_fabBackgroundColor="@color/colorAccent"
+		app:fab_fabDrawableTint="@android:color/white"
+		app:fab_fabRippleColor="@android:color/white"
+		app:fab_menu="@menu/fab_add"
+		app:fab_miniFabBackgroundColor="@color/colorAccent"
+		app:fab_miniFabDrawableTint="@android:color/white"
+		app:fab_miniFabRippleColor="@android:color/white"
+		app:fab_miniFabTextBackground="@drawable/label"
+		app:fab_miniFabTextColor="?android:attr/textColorPrimary"
+		app:fab_useRevealEffect="false"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

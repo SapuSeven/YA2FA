@@ -1,6 +1,8 @@
 package com.sapuseven.ya2fa.activities
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,6 +16,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -52,8 +55,18 @@ class MainActivity : AppCompatActivity() {
     private val otpUpdate = object : Runnable {
         override fun run() {
             adapter.notifyDataSetChanged()
-            listRefreshHandler.postDelayed(this, millisUntilNextUpdate())
+            millisUntilNextUpdate().let { millis ->
+                listRefreshHandler.postDelayed(this, millis)
+                startProgressBarAnimation(millis)
+            }
         }
+    }
+
+    private fun startProgressBarAnimation(duration: Long) {
+        val animation = ObjectAnimator.ofInt(pbInterval, "progress", (duration / 10).toInt(), 0)
+        animation.duration = duration
+        animation.interpolator = LinearInterpolator()
+        animation.start()
     }
 
     private fun millisUntilNextUpdate(): Long {
@@ -116,13 +129,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun showManualInput() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_token, null)
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Add account")
             .setView(dialogView)
-            .setPositiveButton("Add") { dialogInterface, i ->
+            .setPositiveButton("Add") { _, _ ->
                 val newToken = Token(
                     label = dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).text.toString(),
                     issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
