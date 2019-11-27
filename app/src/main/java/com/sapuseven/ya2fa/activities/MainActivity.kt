@@ -106,9 +106,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Auth code copied to clipboard", Toast.LENGTH_SHORT).show()
         }, View.OnLongClickListener { v ->
             val itemPosition = rvEntries.getChildLayoutPosition(v)
-            val item = adapter.getItemAt(itemPosition)
 
             val dialogView = layoutInflater.inflate(R.layout.dialog_add_token, null)
+            val item = adapter.getItemAt(itemPosition)
 
             dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).setText(item.label)
             dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).setText(item.issuer)
@@ -118,12 +118,12 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("Edit account")
                 .setView(dialogView)
                 .setPositiveButton("Save") { _, _ ->
-                    val newToken = item.copy(
+                    val newToken = adapter.getItemAt(itemPosition).copy(
                         label = dialogView.findViewById<TextInputEditText>(R.id.etLabelInput).text.toString(),
                         issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
                         secret = dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).text.toString()
                     )
-                    updateToken(newToken)
+                    updateToken(newToken, itemPosition)
                 }
                 .setNegativeButton("Cancel", null)
                 .setNeutralButton("Delete") { _, _ ->
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                                 "This will not remove 2FA from your account.\n" +
                                 "You will loose access to your account if you don't disable 2FA before deleting!")
                         .setPositiveButton("Delete") { _, _ ->
-                            deleteToken(item)
+                            deleteToken(itemPosition)
                         }
                         .setNegativeButton("Cancel", null)
                         .show()
@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
         listRefreshHandler.post(otpUpdate)
     }
 
-    private fun updateToken(token: Token) {
+    private fun updateToken(token: Token, position: Int) {
         if (!token.isValid()) {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Invalid data")
@@ -300,7 +300,7 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 tokens.replaceAll(token) { it.id == token.id}
-                adapter.notifyDataSetChanged()
+                adapter.notifyItemChanged(position)
             }
         }
     }
@@ -320,18 +320,18 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 tokens.add(token)
-                adapter.notifyDataSetChanged()
+                adapter.notifyItemInserted(adapter.itemCount)
             }
         }
     }
 
-    private fun deleteToken(token: Token) {
+    private fun deleteToken(position: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            tokenDatabase.tokenDao().delete(token)
+            tokenDatabase.tokenDao().delete(adapter.getItemAt(position))
 
             CoroutineScope(Dispatchers.Main).launch {
-                tokens.remove(token)
-                adapter.notifyDataSetChanged()
+                tokens.removeAt(position)
+                adapter.notifyItemRemoved(position)
             }
         }
     }
