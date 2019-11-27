@@ -7,14 +7,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sapuseven.ya2fa.R
 import com.sapuseven.ya2fa.data.Token
-import com.sapuseven.ya2fa.utils.TokenCalculator.DEFAULT_ALGORITHM
-import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_DEFAULT_DIGITS
+import com.sapuseven.ya2fa.utils.TokenCalculator
 import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_DEFAULT_PERIOD
 import com.sapuseven.ya2fa.utils.TokenCalculator.TOTP_RFC6238
 import com.sapuseven.ya2fa.utils.Tools
 import org.apache.commons.codec.binary.Base32
 
-class TokenListAdapter(private val tokens: List<Token>, private val onItemClickListener: View.OnClickListener) :
+class TokenListAdapter(
+    private val tokens: List<Token>,
+    private val onItemClickListener: View.OnClickListener
+) :
     RecyclerView.Adapter<TokenListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entry, parent, false)
@@ -27,12 +29,14 @@ class TokenListAdapter(private val tokens: List<Token>, private val onItemClickL
         holder.tvCode.text = Tools.formatToken(
             TOTP_RFC6238(
                 Base32().decode(item.secret),
-                TOTP_DEFAULT_PERIOD,
-                TOTP_DEFAULT_DIGITS,
-                DEFAULT_ALGORITHM
+                item.period ?: TOTP_DEFAULT_PERIOD,
+                item.length,
+                TokenCalculator.HashAlgorithm.valueOf(item.algorithm)
             ), 3
         )
-        holder.tvLabel.text = if (item.issuer?.isNotBlank() == true) "${item.issuer} (${item.label})" else item.label
+
+        holder.tvLabel.text =
+            if (item.issuer?.isNotBlank() == true) "${item.issuer} (${item.label})" else item.label
     }
 
     override fun getItemCount(): Int = tokens.size

@@ -99,10 +99,11 @@ class MainActivity : AppCompatActivity() {
 
             val code = TokenCalculator.TOTP_RFC6238(
                 Base32().decode(item.secret),
-                TokenCalculator.TOTP_DEFAULT_PERIOD,
-                TokenCalculator.TOTP_DEFAULT_DIGITS,
-                TokenCalculator.DEFAULT_ALGORITHM
+                item.period ?: TokenCalculator.TOTP_DEFAULT_PERIOD,
+                item.length,
+                TokenCalculator.HashAlgorithm.valueOf(item.algorithm)
             )
+
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText("OTP Code", code))
 
