@@ -123,12 +123,21 @@ class MainActivity : AppCompatActivity() {
                         issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
                         secret = dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).text.toString()
                     )
-                    updateItem(newToken)
+                    updateToken(newToken)
                 }
                 .setNegativeButton("Cancel", null)
-                /*.setNeutralButton("Delete") { dialogInterface, i ->
-
-                }*/
+                .setNeutralButton("Delete") { _, _ ->
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle("Remove account")
+                        .setMessage("Are you sure you want to delete the selected authentication token?\n\n" +
+                                "This will not remove 2FA from your account.\n" +
+                                "You will loose access to your account if you don't disable 2FA before deleting!")
+                        .setPositiveButton("Delete") { _, _ ->
+                            deleteToken(item)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                }
                 .show()
 
             true
@@ -185,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                     issuer = dialogView.findViewById<TextInputEditText>(R.id.etIssuerInput).text.toString(),
                     secret = dialogView.findViewById<TextInputEditText>(R.id.etKeyInput).text.toString()
                 )
-                addItem(newToken)
+                addToken(newToken)
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -253,7 +262,7 @@ class MainActivity : AppCompatActivity() {
             REQUEST_CODE_SCANNER -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     try {
-                        addItem(Token.fromUrl(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
+                        addToken(Token.fromUrl(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
                     } catch (e: Token.Companion.InvalidUriException) {
                         MaterialAlertDialogBuilder(this)
                             .setTitle("Invalid code")
@@ -276,7 +285,7 @@ class MainActivity : AppCompatActivity() {
         listRefreshHandler.post(otpUpdate)
     }
 
-    private fun updateItem(token: Token) {
+    private fun updateToken(token: Token) {
         if (!token.isValid()) {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Invalid data")
@@ -296,7 +305,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addItem(token: Token) {
+    private fun addToken(token: Token) {
         if (!token.isValid()) {
             MaterialAlertDialogBuilder(this)
                 .setTitle("Invalid data")
@@ -311,6 +320,17 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 tokens.add(token)
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun deleteToken(token: Token) {
+        CoroutineScope(Dispatchers.IO).launch {
+            tokenDatabase.tokenDao().delete(token)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                tokens.remove(token)
                 adapter.notifyDataSetChanged()
             }
         }
