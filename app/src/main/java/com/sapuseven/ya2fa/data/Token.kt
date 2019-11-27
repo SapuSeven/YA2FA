@@ -38,4 +38,8 @@ data class Token(
 
         class InvalidUriException(s: String) : Exception(s)
     }
+
+    fun isValid(): Boolean {
+        return label.isNotBlank() && secret.isNotBlank()
+    }
 }

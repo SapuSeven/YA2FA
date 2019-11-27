@@ -195,7 +195,15 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_SCANNER -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    addItem(Token.fromUrl(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
+                    try {
+                        addItem(Token.fromUrl(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
+                    } catch (e: Token.Companion.InvalidUriException) {
+                        MaterialAlertDialogBuilder(this)
+                            .setTitle("Invalid code")
+                            .setMessage("The code you scanned is invalid.\nError message: ${e.message}")
+                            .setPositiveButton("OK", null)
+                            .show()
+                    }
                 }
             }
         }
@@ -212,6 +220,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addItem(token: Token) {
+        if (!token.isValid()) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Invalid data")
+                .setMessage("The item you want to add is invalid.\nPlease check your input values and try again.")
+                .setPositiveButton("OK", null)
+                .show()
+            return
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             tokenDatabase.tokenDao().insertAll(token)
 
