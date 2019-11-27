@@ -262,7 +262,7 @@ class MainActivity : AppCompatActivity() {
             REQUEST_CODE_SCANNER -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     try {
-                        addToken(Token.fromUrl(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
+                        addToken(Token.fromUri(Uri.parse(data.getStringExtra(ScannerActivity.EXTRA_STRING_URL))))
                     } catch (e: Token.Companion.InvalidUriException) {
                         MaterialAlertDialogBuilder(this)
                             .setTitle("Invalid code")

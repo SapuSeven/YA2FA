@@ -18,15 +18,13 @@ data class Token(
 ) {
     companion object {
         @Throws(InvalidUriException::class)
-        fun fromUrl(uri: Uri): Token {
+        fun fromUri(uri: Uri): Token {
             if (uri.scheme != "otpauth") throw InvalidUriException("invalid scheme")
-
-            val uriPath = uri.path
 
             return Token(
                 type = uri.host ?: throw InvalidUriException("missing type"),
-                label = with(uriPath ?: throw InvalidUriException("missing label")) {
-                    substring(indexOf(":") + 1)
+                label = with(uri.path ?: throw InvalidUriException("missing label")) {
+                    substring(indexOf(":") + 2)
                 },
                 issuer = uri.getQueryParameter("issuer"),
                 secret = uri.getQueryParameter("secret") ?: throw InvalidUriException("missing secret"),
