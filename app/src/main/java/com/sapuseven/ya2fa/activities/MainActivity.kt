@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -64,10 +65,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startProgressBarAnimation(duration: Long) {
-        val animation = ObjectAnimator.ofInt(pbInterval, "progress", (duration / 10).toInt(), 0)
-        animation.duration = duration
-        animation.interpolator = LinearInterpolator()
-        animation.start()
+        val durationScale: Float = Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)
+
+        ObjectAnimator
+            .ofInt(pbInterval, "progress", (duration / 10).toInt(), 0).apply {
+                setDuration((duration / durationScale).toLong())
+                interpolator = LinearInterpolator()
+                start()
+            }
     }
 
     private fun millisUntilNextUpdate(): Long {
@@ -147,7 +152,6 @@ class MainActivity : AppCompatActivity() {
         rvEntries.layoutManager = LinearLayoutManager(this@MainActivity)
 
         listRefreshHandler = Handler(Looper.getMainLooper())
-        listRefreshHandler.post(otpUpdate)
 
         fab.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
